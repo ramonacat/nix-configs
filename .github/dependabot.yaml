@@ -39,3 +39,33 @@ updates:
         dependency-type: "production"
       development-dependencies:
         dependency-type: "development"
+
+  - package-ecosystem: "cargo"
+    directory: "apps/ratweb"
+    schedule:
+      interval: "daily"
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
+
+  - package-ecosystem: "cargo"
+    directory: "apps/ras"
+    schedule:
+      interval: "daily"
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
+
+  - package-ecosystem: "pip"
+    directory: "apps/hat"
+    schedule:
+      interval: "daily"
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"

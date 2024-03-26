@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "hat"
+version = "0.1.0"
+description = ""
+authors = ["Ramona Łuczkiewicz <ja@agares.info>"]
+packages = [{include = "main"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+zigpy = "^0.63.5"
+zigpy-deconz = "^0.23.1"
+asyncio = "^3.4.3"
+
+[tool.poetry.scripts]
+hat = 'main.cli:main'
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.3.0"
+pyright = "^1.1.355"
+
+[tool.pyright]
+exclude = ["typings/"]
+typeCheckingMode = "strict"
+reportMissingTypeStubs = "warning"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -10,6 +10,10 @@
       url = "github:ipetkov/crane";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    poetry2nix = {
+      url = "github:nix-community/poetry2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     agenix.url = "github:ryantm/agenix";
     alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
@@ -20,7 +24,7 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
   };
 
-  outputs = {
+  outputs = args @ {
     self,
     nixpkgs,
     home-manager,
@@ -31,7 +35,9 @@
     nix-vscode-extensions,
     nix-minecraft,
     alacritty-theme,
+    poetry2nix,
   }: let
+    poetry2nix = args.poetry2nix.lib.mkPoetry2Nix {inherit pkgs;};
     packages = {
       home-automation = import ./packages/home-automation.nix {inherit pkgs craneLib;};
       music-control = import ./packages/music-control.nix {
@@ -46,6 +52,10 @@
       ratweb = import ./packages/ratweb.nix {
         inherit pkgs;
         inherit craneLib;
+      };
+      hat = import ./packages/hat.nix {
+        inherit pkgs;
+        inherit poetry2nix;
       };
     };
     libraries = {
@@ -134,7 +144,7 @@
       in
         pkgs.runCommand "coverage" {} ("mkdir $out\n" + (pkgs.lib.concatStringsSep "\n" (builtins.map (p: "ln -s ${p} $out/${p.name}") paths)) + "\n");
       default = coverage;
-      ratweb = packages.ratweb.package;
+      hat = packages.hat.package;
     };
     devShells.x86_64-linux.default = pkgs.mkShell {
       packages = with pkgs; [
@@ -152,6 +162,9 @@
         terraform-ls
         trunk
         wasm-bindgen-cli
+        python3
+        poetry
+        pyright
 
         (pkgs.rust-bin.stable.latest.default.override {
           extensions = ["rust-src" "llvm-tools-preview"];
